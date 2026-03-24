@@ -177,7 +177,7 @@ async def relay_to_subscription(
         return
 
     await target_channel.send(
-        f"**{author_name}** ({source_name})\n{relay_content}",
+        f"**{author_name}**: {relay_content}",
         allowed_mentions=ALLOWED_MENTIONS,
     )
 
