@@ -6,6 +6,7 @@ from discord.ext import commands
 from src.buttons import make_confirm_cancel_view
 from src.checks import requires_manage_channels
 from src.redis_client import delete_subscription, get_subscription
+from src.webhook_manager import delete_webhook
 
 
 def setup(bot: commands.Bot) -> None:
@@ -30,6 +31,8 @@ def setup(bot: commands.Bot) -> None:
             return
 
         async def on_confirm(interaction: Interaction) -> None:
+            # should probably delete the webhook too
+            await delete_webhook(bot, ctx.channel)
             await delete_subscription(guild.id)
             await interaction.followup.send(
                 f"Unbound **{guild.name}** from the satellite network."

@@ -63,7 +63,7 @@ def setup(bot: commands.Bot) -> None:
 
         async def on_cancel(interaction: Interaction) -> None:
             await interaction.followup.send(
-                "Okay, this server has not been bound to the satellite network."
+                f"Okay, **{guild.name}** has not been bound to the satellite network."
             )
 
         view = make_confirm_cancel_view(

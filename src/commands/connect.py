@@ -39,22 +39,22 @@ def setup(bot: commands.Bot) -> None:
         subscription = await get_subscription(guild.id)
         if subscription is None:
             await ctx.send(
-                "This server is not bound to the satellite network yet. Use the `bind` command first."
+                f"**{guild.name}** is not bound to the satellite network yet. Use the `bind` command first."
             )
             return
 
         if subscription["active"]:
-            await ctx.send("This server is already connected to the satellite network.")
+            await ctx.send(f"**{guild.name}** is already connected to the satellite network.")
             return
 
         updated_subscription = await set_subscription_active(guild.id, True)
         satellite_channel = await get_satellite_channel(bot, updated_subscription["channel_id"])
         if satellite_channel is not None:
-            await satellite_channel.send("You now are connected to the satellite network.")
+            await satellite_channel.send(f"**{guild.name}** is now connected to the satellite network.")
 
         if ctx.channel.id != updated_subscription["channel_id"]:
             await ctx.send(
-                f"Reconnected this server to the satellite network in <#{updated_subscription['channel_id']}>."
+                f"Reconnected **{guild.name}** to the satellite network in <#{updated_subscription['channel_id']}>."
             )
 
     @bot.hybrid_command(
@@ -71,20 +71,20 @@ def setup(bot: commands.Bot) -> None:
         subscription = await get_subscription(guild.id)
         if subscription is None:
             await ctx.send(
-                "This server is not bound to the satellite network yet. Use the `bind` command first."
+                f"**{guild.name}** is not bound to the satellite network yet. Use the `bind` command first."
             )
             return
 
         if not subscription["active"]:
-            await ctx.send("This server is already disconnected from the satellite network.")
+            await ctx.send(f"**{guild.name}** is already disconnected from the satellite network.")
             return
 
         updated_subscription = await set_subscription_active(guild.id, False)
         satellite_channel = await get_satellite_channel(bot, updated_subscription["channel_id"])
         if satellite_channel is not None:
-            await satellite_channel.send("You are no longer connected to the satellite network.")
+            await satellite_channel.send(f"**{guild.name}** is no longer connected to the satellite network.")
 
         if ctx.channel.id != updated_subscription["channel_id"]:
             await ctx.send(
-                f"Disconnected this server from the satellite network in <#{updated_subscription['channel_id']}>."
+                f"Disconnected **{guild.name}** from the satellite network in <#{updated_subscription['channel_id']}>."
             )

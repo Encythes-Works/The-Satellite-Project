@@ -13,11 +13,13 @@ def build_network_embed(
 ) -> discord.Embed:
     embed = discord.Embed(
         title="The Satellite Network",
-        description=f"{len(subscriptions)} server(s) are currently bound to the network.",
         color=discord.Color.blurple(),
     )
 
+    server_count = len(subscriptions)
+    
     lines: list[str] = []
+    
     for guild_id, subscription in sorted(
         subscriptions.items(),
         key=lambda item: (
@@ -32,6 +34,9 @@ def build_network_embed(
         lines.append(
             f"**{marker}**: {state}"
         )
+
+    if lines:
+        lines.insert(0, f"{server_count} server{"s are" if server_count != 1 else " is"} currently bound to the network.\n")
 
     embed.description = "\n".join(lines) if lines else "No servers are currently bound to the network."
     return embed
